@@ -40,8 +40,6 @@ public class YourTest {
 	}
 
   	/* The rest of your test goes here */
-
-}
 ```
 
 Licensing
