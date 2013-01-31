@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.agiliumlabs.arquillian</groupId>
 	<artifactId>arquillian-gwt-dev-mode</artifactId>
-	<version>1.0.0.Final</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<licenses>
 		<license>
