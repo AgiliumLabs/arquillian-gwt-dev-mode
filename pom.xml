@@ -6,6 +6,18 @@
 	<artifactId>arquillian-gwt-dev-mode</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License Version 3</name>
+			<url>http://www.gnu.org/copyleft/lesser.html</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git://github.com/AgiliumLabs/arquillian-gwt-dev-mode.git</connection>
+		<developerConnection>scm:git:git@github.com:AgiliumLabs/arquillian-gwt-dev-mode.git</developerConnection>
+	</scm>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gwt.version>2.4.0</gwt.version>
