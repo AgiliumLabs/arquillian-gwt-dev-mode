@@ -39,7 +39,7 @@ public class YourTest {
 				addAsWebResource(new File("src/main/webapp/App.html"));   
 	}
 
-   ...
+  	/* The rest of your test goes here */
 
 }
 ```
