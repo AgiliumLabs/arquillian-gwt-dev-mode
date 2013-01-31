@@ -48,4 +48,4 @@ The extension is licensed under GNU lesser general public license version 3.
 
 See Also
 --------
-* http://arquillian.org[Arquillian Project Site]
+* http://arquillian.org [Arquillian Project Site]
