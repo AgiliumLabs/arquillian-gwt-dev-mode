@@ -17,6 +17,9 @@
 package com.agiliumlabs.arquillian.gwt;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -32,6 +35,8 @@ import org.jboss.shrinkwrap.resolver.impl.maven.MavenBuilderImpl;
  */
 public class GwtArchive extends WebArchiveImpl {
 
+	private List<File> sources = new ArrayList<File>();
+	
 	public GwtArchive(Archive<?> delegate) {
 		super(delegate);
 	}
@@ -45,9 +50,24 @@ public class GwtArchive extends WebArchiveImpl {
 			archive.addAsWebInfResource(jettyEnv);
 		MavenBuilderImpl libs = (MavenBuilderImpl) DependencyResolvers.use(MavenDependencyResolver.class)
 			.configureFrom("../settings/settings.xml")
-			.includeDependenciesFromPom("pom.xml");
-		archive.addAsLibraries(libs.resolveAs(JavaArchive.class));
+			.includeDependenciesFromPom("pom.xml")
+			.exclusion("org.jboss.weld.se:weld-se");
+		archive.addSources(new File("src/main/java")).
+			addSources(new File("target/generated-sources/gwt")).
+			addSources(new File("src/main/resources")).
+			addSources(new File("src/test/java")).
+			addSources(new File("src/test/resources")).
+			addAsLibraries(libs.resolveAs(JavaArchive.class));
 		return archive;
+	}
+	
+	public GwtArchive addSources(File dir) {
+		sources.add(dir);
+		return this;
+	}
+	
+	public Collection<File> getSources() {
+		return sources;
 	}
 	
 	public GwtArchive addJpa() {

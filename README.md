@@ -1,6 +1,5 @@
 Arquillian GWT Developlement Mode Container Extension
 =====================================================
-
 The extension makes it easy to write Arquillian tests against GWT applications.
 
 How To Use

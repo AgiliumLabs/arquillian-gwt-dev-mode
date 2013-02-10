@@ -19,6 +19,8 @@ public class GwtDevModeDeploymentConfiguration implements ContainerConfiguration
 	private int codeServerPort = 9997;
 	private String war = "target/arquillian-gwt";
 	private String[] modules;
+	private String logDir = "target/arquillian-gwt-logs";
+	private String startPage;
 	
 	@Override
 	public void validate() throws ConfigurationException {
@@ -88,7 +90,23 @@ public class GwtDevModeDeploymentConfiguration implements ContainerConfiguration
 		this.modules = modules.split(",");
 	}
 
-	public static enum LogLevel {
+	public String getLogDir() {
+		return logDir;
+	}
+
+	public void setLogDir(String logDir) {
+		this.logDir = logDir;
+	}
+
+	public String getStartPage() {
+		return startPage;
+	}
+
+	public void setStartPage(String startPage) {
+		this.startPage = startPage;
+	}
+
+	public static enum LogLevel {		
 		
 		ERROR, WARN, INFO, TRACE, DEBUG, SPAM, ALL;
 		

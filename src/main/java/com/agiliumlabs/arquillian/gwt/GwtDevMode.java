@@ -4,8 +4,11 @@
 package com.agiliumlabs.arquillian.gwt;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 import com.google.gwt.core.ext.TreeLogger;
@@ -26,13 +29,16 @@ public class GwtDevMode extends DevMode {
 		super.doShutDownServer();
 	}
 	
-	public void start(GwtDevModeDeploymentConfiguration config) {
-		String[] baseArgs = new String[] {"-port", Integer.toString(config.getPort()), "-logLevel", config.getLogLevel().name(), "-bindAddress", config.getBindAddress(), "-codeServerPort", Integer.toString(config.getCodeServerPort()), "-war", config.getWar()};
+	public void start(GwtDevModeDeploymentConfiguration config, GwtArchive archive) throws IOException {
+		String[] baseArgs = new String[] {"-port", Integer.toString(config.getPort()), "-logdir", config.getLogDir(), "-logLevel", config.getLogLevel().name(), "-bindAddress", config.getBindAddress(), "-codeServerPort", Integer.toString(config.getCodeServerPort()), "-war", config.getWar()};
 		String[] args = new String[baseArgs.length + config.getModulesArray().length];
 		System.arraycopy(baseArgs, 0, args, 0, baseArgs.length);
 		System.arraycopy(config.getModulesArray(), 0, args, baseArgs.length, config.getModulesArray().length);
 	    if (new ArgProcessor(super.options).processArgs(args)) {
 			super.options.setServletContainerLauncher(new ContextCaptureServletContainerLauncher());
+			for (File sourceDir : archive.getSources())
+				if (sourceDir.isDirectory())
+					addToClasspath(sourceDir);			
 	    	launch();
 	    }
 	}
@@ -49,6 +55,20 @@ public class GwtDevMode extends DevMode {
 	public WebAppContext getWebAppContext() {
 		return webAppContext;
 	}
+	
+	@SuppressWarnings("deprecation")
+	public void addToClasspath(File file) throws IOException {
+		URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+		Class<?> sysclass = URLClassLoader.class;
+		try {
+			Method method = sysclass.getDeclaredMethod("addURL", URL.class);
+			method.setAccessible(true);
+			method.invoke(sysloader, new Object[]{file.toURL()});
+		} catch (Throwable t) {
+			t.printStackTrace();
+			throw new IOException("Error, could not add URL to system classloader");
+		}
+	}
 
 	public class ContextCaptureServletContainerLauncher extends JettyLauncher {
 
@@ -60,8 +80,4 @@ public class GwtDevMode extends DevMode {
 
 	}
 	
-	public class CustomServletHandler extends ServletHandler {
-		
-	}
-
 }
