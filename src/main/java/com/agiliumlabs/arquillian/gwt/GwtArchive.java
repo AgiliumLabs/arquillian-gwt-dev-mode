@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.spec.WebArchiveImpl;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
@@ -43,8 +42,10 @@ public class GwtArchive extends WebArchiveImpl {
 
 	public static GwtArchive create() {
 		GwtArchive archive = ShrinkWrap.create(GwtArchive.class);
-		archive.addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"))
-			.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+		archive.addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"));
+		File beansXml = new File("src/main/webapp/WEB-INF/beans.xml");
+		if (beansXml.exists())
+			archive.addAsWebInfResource(beansXml, "beans.xml");
 		File jettyEnv = new File("src/main/webapp/WEB-INF/jetty-env.xml");
 		if (jettyEnv.exists())
 			archive.addAsWebInfResource(jettyEnv);

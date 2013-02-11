@@ -38,7 +38,7 @@ public class GwtDevMode extends DevMode {
 			super.options.setServletContainerLauncher(new ContextCaptureServletContainerLauncher());
 			for (File sourceDir : archive.getSources())
 				if (sourceDir.isDirectory())
-					addToClasspath(sourceDir);			
+					addToClasspath(sourceDir);
 	    	launch();
 	    }
 	}
