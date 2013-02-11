@@ -9,7 +9,7 @@ How To Use
 <dependency>
     <groupId>com.agiliumlabs.arquillian</groupId>
     <artifactId>arquillian-gwt-dev-mode</artifactId>
-    <version>1.0.0.Final</version>
+    <version>1.0.1.Final</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -22,6 +22,7 @@ How To Use
     <container qualifier="gwt" default="true">
     	<configuration>
     		<property name="modules">package.Module1,package.Module2</property>
+    		<property name="startPage">App.html</property>
     	</configuration>
     </container>
 </arquillian>
@@ -29,8 +30,12 @@ How To Use
 
 * YourTest.java:
 ```java
+@RunAsClient
 @RunWith(Arquillian.class)
 public class YourTest {
+
+    @ArquillianResource
+    private GwtApplicationContext gwtApplication;
 
     @Deployment
     public static GwtArchive buildDeployment() {
