@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.agiliumlabs.arquillian</groupId>
 	<artifactId>arquillian-gwt-dev-mode</artifactId>
-	<version>1.0.1.Final</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>Arquillian GWT Developlement Mode Container Extension</name>
 	<description>Arquillian GWT Developlement Mode Container Extension</description>
 	<url>https://github.com/AgiliumLabs/arquillian-gwt-dev-mode</url>
@@ -19,7 +19,7 @@
 		<connection>scm:git:git://github.com/AgiliumLabs/arquillian-gwt-dev-mode.git</connection>
 		<developerConnection>scm:git:git@github.com:AgiliumLabs/arquillian-gwt-dev-mode.git</developerConnection>
 		<url>https://github.com/AgiliumLabs/arquillian-gwt-dev-mode</url>
-	  <tag>arquillian-gwt-dev-mode-1.0.1.Final</tag>
+	  <tag>HEAD</tag>
   </scm>
 	
 	<developers>
