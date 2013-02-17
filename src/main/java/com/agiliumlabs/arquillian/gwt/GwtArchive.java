@@ -1,5 +1,6 @@
 /*
  * Copyright 2011 JBoss, by Red Hat, Inc
+ * Copyright 2012 Agilium Labs, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,53 +35,55 @@ import org.jboss.shrinkwrap.resolver.impl.maven.MavenBuilderImpl;
  */
 public class GwtArchive extends WebArchiveImpl {
 
-	private List<File> sources = new ArrayList<File>();
-	
-	public GwtArchive(Archive<?> delegate) {
-		super(delegate);
-	}
+    private List<File> sources = new ArrayList<File>();
 
-	public static GwtArchive create() {
-		GwtArchive archive = ShrinkWrap.create(GwtArchive.class);
-		archive.addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"));
-		File beansXml = new File("src/main/webapp/WEB-INF/beans.xml");
-		if (beansXml.exists())
-			archive.addAsWebInfResource(beansXml, "beans.xml");
-		File jettyEnv = new File("src/main/webapp/WEB-INF/jetty-env.xml");
-		if (jettyEnv.exists())
-			archive.addAsWebInfResource(jettyEnv);
-		MavenBuilderImpl libs = (MavenBuilderImpl) DependencyResolvers.use(MavenDependencyResolver.class)
-			.configureFrom("../settings/settings.xml")
-			.includeDependenciesFromPom("pom.xml")
-			.exclusion("org.jboss.weld.se:weld-se");
-		archive.addSources(new File("src/main/java")).
-			addSources(new File("target/generated-sources/gwt")).
-			addSources(new File("src/main/resources")).
-			addSources(new File("src/test/java")).
-			addSources(new File("src/test/resources")).
-			addAsLibraries(libs.resolveAs(JavaArchive.class));
-		return archive;
-	}
-	
-	public GwtArchive addSources(File dir) {
-		sources.add(dir);
-		return this;
-	}
-	
-	public Collection<File> getSources() {
-		return sources;
-	}
-	
-	public GwtArchive addJpa() {
-		addAsResource(new File("target/classes/META-INF/persistence.xml"), "META-INF/persistence.xml");
-		addAsResource("import.sql");
-		return this;
-	}
-	
-	public GwtArchive addErrai() {
-		addAsResource("ErraiApp.properties");
-		addAsResource("ErraiService.properties");
-		return this;
-	}
-	
+    public GwtArchive(Archive<?> delegate) {
+        super(delegate);
+    }
+
+    public static GwtArchive create() {
+        GwtArchive archive = ShrinkWrap.create(GwtArchive.class);
+        archive.addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"));
+        File beansXml = new File("src/main/webapp/WEB-INF/beans.xml");
+        if (beansXml.exists()) {
+            archive.addAsWebInfResource(beansXml, "beans.xml");
+        }
+        File jettyEnv = new File("src/main/webapp/WEB-INF/jetty-env.xml");
+        if (jettyEnv.exists()) {
+            archive.addAsWebInfResource(jettyEnv);
+        }
+        archive.addSources(new File("src/main/java")).addSources(new File("target/generated-sources/gwt"))
+                .addSources(new File("src/main/resources")).addSources(new File("src/test/java"))
+                .addSources(new File("src/test/resources"));
+        return archive;
+    }
+
+    public GwtArchive addMavenDependencies(String... exclusions) {
+        MavenBuilderImpl libs = (MavenBuilderImpl) DependencyResolvers.use(MavenDependencyResolver.class)
+                .includeDependenciesFromPom("pom.xml").exclusion("org.jboss.weld.se:weld-se");
+        addAsLibraries(libs.resolveAs(JavaArchive.class));
+        return this;
+    }
+
+    public GwtArchive addSources(File dir) {
+        sources.add(dir);
+        return this;
+    }
+
+    public Collection<File> getSources() {
+        return sources;
+    }
+
+    public GwtArchive addJpa() {
+        addAsResource(new File("target/classes/META-INF/persistence.xml"), "META-INF/persistence.xml");
+        addAsResource("import.sql");
+        return this;
+    }
+
+    public GwtArchive addErrai() {
+        addAsResource("ErraiApp.properties");
+        addAsResource("ErraiService.properties");
+        return this;
+    }
+
 }
