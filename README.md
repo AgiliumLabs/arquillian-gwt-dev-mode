@@ -39,7 +39,8 @@ public class YourTest {
 
     @Deployment
     public static GwtArchive buildDeployment() {
-        GwtArchive.create().addPackages(true, "your.app.package").
+        GwtArchive.create().addMavenDependencies().
+                addPackages(true, "your.app.package").
 				addAsWebResource(new File("src/main/webapp/App.html"));   
 	}
 
