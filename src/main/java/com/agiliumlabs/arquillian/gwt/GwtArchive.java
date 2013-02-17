@@ -36,6 +36,7 @@ import org.jboss.shrinkwrap.resolver.impl.maven.MavenBuilderImpl;
 public class GwtArchive extends WebArchiveImpl {
 
     private List<File> sources = new ArrayList<File>();
+    private String pathToSettingsXml;
 
     public GwtArchive(Archive<?> delegate) {
         super(delegate);
@@ -58,9 +59,17 @@ public class GwtArchive extends WebArchiveImpl {
         return archive;
     }
 
+    public GwtArchive configureMaven(String pathToSettingsXml) {
+        this.pathToSettingsXml = pathToSettingsXml;
+        return this;
+    }
+
     public GwtArchive addMavenDependencies(String... exclusions) {
-        MavenBuilderImpl libs = (MavenBuilderImpl) DependencyResolvers.use(MavenDependencyResolver.class)
-                .includeDependenciesFromPom("pom.xml").exclusion("org.jboss.weld.se:weld-se");
+        MavenBuilderImpl libs = (MavenBuilderImpl) DependencyResolvers.use(MavenDependencyResolver.class);
+        if (pathToSettingsXml != null) {
+            libs.configureFrom(pathToSettingsXml);
+        }
+        libs.includeDependenciesFromPom("pom.xml").exclusion("org.jboss.weld.se:weld-se");
         addAsLibraries(libs.resolveAs(JavaArchive.class));
         return this;
     }
